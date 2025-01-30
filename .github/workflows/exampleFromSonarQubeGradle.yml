@@ -12,38 +12,53 @@
 # }
 
 name: SonarQube Gradle
+
 on:
   push:
     branches:
       - master
   pull_request:
     types: [opened, synchronize, reopened]
+
 jobs:
   build:
     name: Build and analyze
     runs-on: ubuntu-latest
     steps:
+      # Étape 1 : Checkout du code source
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+          fetch-depth: 0  # Désactiver les clones peu profonds pour une meilleure analyse
+
+      # Étape 2 : Configuration de l'environnement JDK
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: 17
-          distribution: 'zulu' # Alternative distribution options are available
+          distribution: 'zulu' # Autres distributions disponibles
+
+      # Étape 3 : Mise en cache des paquets SonarQube
       - name: Cache SonarQube packages
         uses: actions/cache@v4
         with:
           path: ~/.sonar/cache
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
+
+      # Étape 4 : Mise en cache des paquets Gradle
       - name: Cache Gradle packages
         uses: actions/cache@v4
         with:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
           restore-keys: ${{ runner.os }}-gradle
+
+      # Étape 5 : Donner les permissions d'exécution à gradlew
+      - name: Grant execute permissions for Gradle wrapper
+        run: chmod +x ./gradlew
+
+      # Étape 6 : Compilation et analyse avec SonarQube
       - name: Build and analyze
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ./gradlew build sonar --info
+        run: ./gradlew build sonarqube --info
