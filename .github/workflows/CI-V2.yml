@@ -36,5 +36,5 @@ jobs:
           -Dsonar.host.url=https://sonarcloud.io
 
       - name: Deploy to Test Environment
-        run: echo "Déploiement en environnement de test"
+        run: echo "Déploiement en environnement test"
 
