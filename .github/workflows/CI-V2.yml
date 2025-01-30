@@ -1,4 +1,4 @@
-name: CI Pipeline for SonarQube V2 
+name: CI Pipeline - SonarQube V2 
 
 on:
   push:
