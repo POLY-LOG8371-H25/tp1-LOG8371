@@ -1,0 +1,32 @@
+name: SonarQube CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Vérifier le dépôt
+        uses: actions/checkout@v2
+
+      - name: Configurer JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+
+      - name: Installer les dépendances
+        run: mvn install
+
+      - name: Exécuter les tests unitaires
+        run: mvn test
+
+      - name: Lancer SonarQube
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}  # Vous devez définir un token d'accès dans les secrets GitHub
+        run: mvn sonar:sonar -Dsonar.host.url=http://localhost:9000
