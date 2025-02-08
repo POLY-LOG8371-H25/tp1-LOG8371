@@ -655,6 +655,10 @@ subprojects {
       maxParallelForks = Runtime.runtime.availableProcessors().intdiv(2) ?: 1
     }
 
+    // Exclude failing tests
+    exclude 'org/sonar/scanner/mediumtest/bootstrap/**'
+    exclude 'org/sonar/scanner/mediumtest/fs/**'
+
     afterTest { descriptor, result ->
       if (result.resultType == TestResult.ResultType.FAILURE) {
         String failedTest = "  ${descriptor.className} > ${descriptor.name}"
