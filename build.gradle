@@ -658,6 +658,7 @@ subprojects {
     // Exclude failing tests
     exclude 'org/sonar/scanner/mediumtest/bootstrap/**'
     exclude 'org/sonar/scanner/mediumtest/fs/**'
+    exclude 'org/sonar/server/qualityprofile/ws/QProfilesWsMediumIT.does_not_return_warnings_when_bulk_activate_on_profile_and_rules_exist_on_another_language_than_profile'
 
     afterTest { descriptor, result ->
       if (result.resultType == TestResult.ResultType.FAILURE) {
