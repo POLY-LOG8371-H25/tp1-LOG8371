@@ -202,6 +202,9 @@ sonar {
     property 'sonar.projectName', projectTitle
     property 'sonar.projectVersion', "${versionInSources}-SNAPSHOT"
     property 'sonar.buildString', version
+    property "sonar.projectKey", "POLY-LOG8371-H25_tp1-LOG8371"
+    property "sonar.organization", "poly-log8371-h25"
+    property "sonar.host.url", "https://sonarcloud.io"
   }
 }
 
