@@ -57,6 +57,8 @@ jobs:
       - name: Grant execute permissions for Gradle wrapper
         run: chmod +x ./gradlew
 
+      - name: Run tests only
+        run: ./gradlew test --info --debug
       # Étape 6 : Compilation et analyse avec SonarQube
       - name: Build and analyze
         env:
