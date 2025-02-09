@@ -1,9 +1,3 @@
-#todo: Update your pom.xml file with the following properties:
-# <properties>
-#   <sonar.organization>poly-log8371-h25</sonar.organization>
-#   <sonar.host.url>https://sonarcloud.io</sonar.host.url>
-# </properties>
-
 name: SonarQube Maven
 on:
   push:
@@ -36,13 +30,17 @@ jobs:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
+      - name: Build the project
+        run: |
+          cd sonar-core/src/test/projects
+          mvn clean install
       - name: Build and analyze
         env:
-             SONAR_TOKEN: ${{ secrets.SONARQUBE_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONARQUBE_TOKEN }}
         run: |
           cd sonar-core/src/test/projects
           mvn sonar:sonar \
           -Dsonar.projectKey=POLY-LOG8371-H25_tp1-LOG8371 \
           -Dsonar.organization=poly-log8371-h25 \
           -Dsonar.host.url=https://sonarcloud.io \
-          -Dsonar.login=$SONARQUBE_TOKEN
+          -Dsonar.login=$SONAR_TOKEN
