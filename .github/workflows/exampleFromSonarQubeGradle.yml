@@ -58,7 +58,7 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Run tests only
-        run: ./gradlew test --info --debug
+        run: ./gradlew test --info 
         continue-on-error: true
       # Étape 6 : Compilation et analyse avec SonarQube
       - name: Build and analyze
