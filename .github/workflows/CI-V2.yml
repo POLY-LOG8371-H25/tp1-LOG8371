@@ -34,7 +34,7 @@ jobs:
           cd sonar-core/src/test/projects
           mvn sonar:sonar \
           -Dsonar.projectKey=POLY-LOG8371-H25_tp1-LOG8371 \
-          -Dsonar.organization=POLY-LOG8371-H25 \
+          -Dsonar.organization=poly-log8371-H25 \
           -Dsonar.host.url=https://sonarcloud.io \
           -Dsonar.login=$SONARQUBE_TOKEN
 
