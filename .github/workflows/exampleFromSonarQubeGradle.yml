@@ -61,4 +61,4 @@ jobs:
       - name: Build and analyze
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ./gradlew build -x test sonarqube --info --debug #ignorer tout les tests temporairement
+        run: ./gradlew build sonarqube --info --debug #ignorer tout les tests temporairement
