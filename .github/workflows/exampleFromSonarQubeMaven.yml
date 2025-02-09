@@ -36,11 +36,11 @@ jobs:
           mvn clean install
       - name: Build and analyze
         env:
-          SONAR_TOKEN: ${{ secrets.SONARQUBE_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_QUBE_V2 }}
         run: |
           cd sonar-core/src/test/projects
           mvn sonar:sonar \
           -Dsonar.projectKey=POLY-LOG8371-H25_tp1-LOG8371 \
           -Dsonar.organization=poly-log8371-h25 \
           -Dsonar.host.url=https://sonarcloud.io \
-          -Dsonar.login=$SONAR_TOKEN
+          -Dsonar.login=$SONAR_QUBE_V2
