@@ -640,13 +640,25 @@ subprojects {
     systemProperty 'user.country', 'US'
     environment 'LANGUAGE', 'en_US'
     testLogging {
-      events "skipped", "failed" // verbose log for failed and skipped tests (by default the name of the tests are not logged)
+      events "passed", "skipped", "failed" // verbose log for failed and skipped tests (by default the name of the tests are not logged)
       exceptionFormat 'full' // log the full stack trace (default is the 1st line of the stack trace)
     }
+    reports {
+        junitXml.required.set(true) // Active les rapports au format XML (utilisé par CI)
+        html.required.set(true) // Active les rapports HTML (utilisé pour le diagnostic humain)
+    }
+
     jacoco {
       enabled = true // do not disable recording of code coverage, so that remote Gradle cache entry can be used locally
       includes = ['com.sonar.*', 'com.sonarsource.*', 'org.sonar.*', 'org.sonarqube.*', 'org.sonarsource.*']
     }
+    jacocoTestReport {
+    reports {
+        xml.required.set(true) // Nécessaire pour l'analyse SonarQube
+        html.required.set(true) // Facultatif : utile pour vérifier localement
+    }
+    dependsOn test // Assure que les tests sont exécutés avant de générer le rapport
+  }
     if (project.hasProperty('maxParallelTests')) {
       maxParallelForks = project.maxParallelTests as int
     }
