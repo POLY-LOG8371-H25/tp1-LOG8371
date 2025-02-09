@@ -38,5 +38,9 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
       - name: Build and analyze
         env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=POLY-LOG8371-H25_tp1-LOG8371
+             SONAR_TOKEN: ${{ secrets.SONARQUBE_TOKEN }}
+        run: mvn sonar:sonar \
+          -Dsonar.projectKey=POLY-LOG8371-H25_tp1-LOG8371 \
+          -Dsonar.organization=POLY-LOG8371-H25 \
+          -Dsonar.host.url=https://sonarcloud.io \
+          -Dsonar.login=$SONARQUBE_TOKEN
