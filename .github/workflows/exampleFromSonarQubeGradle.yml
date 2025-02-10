@@ -54,8 +54,12 @@ jobs:
       - name: Build, test and analyze
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ./gradlew build sonarqube --info --debug
-        
+        run: ./gradlew build sonarqube \
+          -Dsonar.projectKey=POLY-LOG8371-H25_tp1-LOG8371 \
+          -Dsonar.organization=poly-log8371-h25 \
+          -Dsonar.host.url=https://sonarcloud.io \
+          -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+          
       # Étape 9 : Compression du log de build (optionnel pour garder une trace)
       - name: Compress Build Log
         run: gzip -9 build.log || echo "No build.log found"
