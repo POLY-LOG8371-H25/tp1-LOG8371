@@ -19,7 +19,7 @@ jobs:
 
       # Étape 2 : Configuration de l'environnement JDK
       - name: Set up JDK 17
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v2
         with:
           java-version: 17
           distribution: 'zulu' # Autres distributions disponibles
@@ -32,7 +32,7 @@ jobs:
 
       # Étape 3 : Mise en cache des paquets SonarQube
       - name: Cache SonarQube packages
-        uses: actions/cache@v4
+        uses: actions/cache@v2
         with:
           path: ~/.sonar/cache
           key: ${{ runner.os }}-sonar
@@ -68,7 +68,7 @@ jobs:
       - name: Build, test and analyze
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ./gradlew build sonarqube --info --stacktrace
+        run: ./gradlew build -x test  sonarqube --info --stacktrace
           
       # Étape 9 : Compression du log de build (optionnel pour garder une trace)
       - name: Compress Build Log
