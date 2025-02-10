@@ -46,19 +46,21 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
           restore-keys: ${{ runner.os }}-gradle
 
+      - name: Clean Gradle Cache
+        run: rm -rf ~/.gradle/caches
+
       # Étape 5 : Donner les permissions d'exécution à gradlew
       - name: Grant execute permissions for Gradle wrapper
         run: chmod +x ./gradlew
 
+      - name: Debug environment
+        run: echo $SONAR_TOKEN
+        
       # Étape 6 : Compilation et analyse avec SonarQube
       - name: Build, test and analyze
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ./gradlew build sonarqube \
-          -Dsonar.projectKey=POLY-LOG8371-H25_tp1-LOG8371 \
-          -Dsonar.organization=poly-log8371-h25 \
-          -Dsonar.host.url=https://sonarcloud.io \
-          -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+        run: ./gradlew build sonarqube --info --stacktrace
           
       # Étape 9 : Compression du log de build (optionnel pour garder une trace)
       - name: Compress Build Log
