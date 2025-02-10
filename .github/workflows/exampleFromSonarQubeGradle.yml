@@ -31,7 +31,7 @@ jobs:
 
           
       - name: Clean Gradle Cache
-        run: rm -rf ~/.gradle/caches
+        run: rm -rf ~/.gradle
 
       # Étape 3 : Mise en cache des paquets SonarQube
       - name: Cache SonarQube packages
@@ -63,6 +63,9 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         
+      - name: Use Gradle Wrapper
+        run: ./gradlew wrapper --gradle-version 8.9
+            
       - name: Build only
         run: ./gradlew build --stacktrace    
       # Étape 6 : Compilation et analyse avec SonarQube
