@@ -56,13 +56,6 @@ jobs:
 
       - name: Debug environment
         run: |
-          if [[ -z "$SONAR_TOKEN" ]]; then
-            echo "❌ SONAR_TOKEN is not set"
-            exit 1
-          else
-            echo "✅ SONAR_TOKEN is set"
-          fi
-          |
           java -version
           ./gradlew --version
           env
