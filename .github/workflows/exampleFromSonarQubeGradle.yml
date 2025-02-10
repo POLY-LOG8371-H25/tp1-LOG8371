@@ -24,6 +24,10 @@ jobs:
           java-version: 17
           distribution: 'zulu' # Autres distributions disponibles
 
+      - name: Install Dependencies
+        run: |
+          apt-get update && apt-get install -y git && apt-get install -y git unzip
+
       # Étape 3 : Mise en cache des paquets SonarQube
       - name: Cache SonarQube packages
         uses: actions/cache@v4
