@@ -59,7 +59,7 @@ jobs:
         run: chmod +x ./gradlew
         
       - name: Use Gradle Wrapper
-        run: ./gradlew wrapper --gradle-version 8.9
+        run: ./gradlew wrapper 
             
       
       # Compilation et analyse avec SonarQube
