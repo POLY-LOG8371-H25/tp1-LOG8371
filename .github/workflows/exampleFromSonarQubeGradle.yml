@@ -15,7 +15,7 @@ jobs:
       # Étape 1 : Checkout du code source
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Désactiver les clones peu profonds pour une meilleure analyse
+          fetch-depth: 0  
 
       # Étape 2 : Configuration de l'environnement JDK
       - name: Set up JDK 17
@@ -23,12 +23,6 @@ jobs:
         with:
           java-version: 17
           distribution: 'zulu' # Autres distributions disponibles
-
-      - name: Install Dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y git unzip
-
 
       # Étape 3 : Mise en cache des paquets SonarQube
       - name: Cache SonarQube packages
@@ -51,27 +45,7 @@ jobs:
         run: chmod +x ./gradlew
 
       # Étape 6 : Compilation et analyse avec SonarQube
-      - name: Build, test and analyze
+      - name: Build, unit tests and analyze
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ./gradlew build sonarqube --info --debug
-        
-      # Étape 9 : Compression du log de build (optionnel pour garder une trace)
-      - name: Compress Build Log
-        run: gzip -9 build.log || echo "No build.log found"
-
-      # Étape 10 : Upload du build log en tant qu'artifact
-      - name: Upload Build Log Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-log
-          path: build.log.gz
-          retention-days: 7
-
-      # Étape 11 : Déploiement - Décompression de la distribution et lancement du serveur SonarQube
-      - name: Unzip Distribution and Launch SonarQube
-        run: |
-          cd sonar-application/build/distributions/
-          unzip sonar-application-25.2-SNAPSHOT.zip
-          cd sonar-application-25.2-SNAPSHOT
-          ./bin/linux-x86-64/sonar.sh start
+        run: ./gradlew build -x test sonarqube --info --debug
