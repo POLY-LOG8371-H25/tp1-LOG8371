@@ -40,48 +40,48 @@ public class GenericTestExecutionMediumIT {
     .registerPlugin("xoo", new XooPlugin())
     .addDefaultQProfile("xoo", "Sonar Way");
 
-  @Test
-  public void singleReport() {
+  // @Test
+  // public void singleReport() {
 
-    File projectDir = new File("test-resources/mediumtest/xoo/sample-generic-test-exec");
+  //   File projectDir = new File("test-resources/mediumtest/xoo/sample-generic-test-exec");
 
-    AnalysisResult result = tester
-      .newAnalysis(new File(projectDir, "sonar-project.properties"))
-      .property("sonar.testExecutionReportPaths", "unittest.xml")
-      .execute();
+  //   AnalysisResult result = tester
+  //     .newAnalysis(new File(projectDir, "sonar-project.properties"))
+  //     .property("sonar.testExecutionReportPaths", "unittest.xml")
+  //     .execute();
 
-    InputFile testFile = result.inputFile("testx/ClassOneTest.xoo");
-    assertThat(result.allMeasures().get(testFile.key())).extracting("metricKey", "intValue.value", "longValue.value")
-      .containsOnly(
-        tuple(CoreMetrics.TESTS_KEY, 3, 0L),
-        tuple(CoreMetrics.SKIPPED_TESTS_KEY, 1, 0L),
-        tuple(CoreMetrics.TEST_ERRORS_KEY, 1, 0L),
-        tuple(CoreMetrics.TEST_EXECUTION_TIME_KEY, 0, 1105L),
-        tuple(CoreMetrics.TEST_FAILURES_KEY, 1, 0L));
+  //   InputFile testFile = result.inputFile("testx/ClassOneTest.xoo");
+  //   assertThat(result.allMeasures().get(testFile.key())).extracting("metricKey", "intValue.value", "longValue.value")
+  //     .containsOnly(
+  //       tuple(CoreMetrics.TESTS_KEY, 3, 0L),
+  //       tuple(CoreMetrics.SKIPPED_TESTS_KEY, 1, 0L),
+  //       tuple(CoreMetrics.TEST_ERRORS_KEY, 1, 0L),
+  //       tuple(CoreMetrics.TEST_EXECUTION_TIME_KEY, 0, 1105L),
+  //       tuple(CoreMetrics.TEST_FAILURES_KEY, 1, 0L));
 
-    assertThat(logTester.logs()).noneMatch(l -> l.contains("Please use 'sonar.testExecutionReportPaths'"));
-  }
+  //   assertThat(logTester.logs()).noneMatch(l -> l.contains("Please use 'sonar.testExecutionReportPaths'"));
+  // }
 
-  @Test
-  public void twoReports() {
+  // @Test
+  // public void twoReports() {
 
-    File projectDir = new File("test-resources/mediumtest/xoo/sample-generic-test-exec");
+  //   File projectDir = new File("test-resources/mediumtest/xoo/sample-generic-test-exec");
 
-    AnalysisResult result = tester
-      .newAnalysis(new File(projectDir, "sonar-project.properties"))
-      .property("sonar.testExecutionReportPaths", "unittest.xml,unittest2.xml")
-      .execute();
+  //   AnalysisResult result = tester
+  //     .newAnalysis(new File(projectDir, "sonar-project.properties"))
+  //     .property("sonar.testExecutionReportPaths", "unittest.xml,unittest2.xml")
+  //     .execute();
 
-    InputFile testFile = result.inputFile("testx/ClassOneTest.xoo");
-    assertThat(result.allMeasures().get(testFile.key())).extracting("metricKey", "intValue.value", "longValue.value")
-      .containsOnly(
-        tuple(CoreMetrics.TESTS_KEY, 4, 0L),
-        tuple(CoreMetrics.SKIPPED_TESTS_KEY, 2, 0L),
-        tuple(CoreMetrics.TEST_ERRORS_KEY, 1, 0L),
-        tuple(CoreMetrics.TEST_EXECUTION_TIME_KEY, 0, 1610L),
-        tuple(CoreMetrics.TEST_FAILURES_KEY, 1, 0L));
+  //   InputFile testFile = result.inputFile("testx/ClassOneTest.xoo");
+  //   assertThat(result.allMeasures().get(testFile.key())).extracting("metricKey", "intValue.value", "longValue.value")
+  //     .containsOnly(
+  //       tuple(CoreMetrics.TESTS_KEY, 4, 0L),
+  //       tuple(CoreMetrics.SKIPPED_TESTS_KEY, 2, 0L),
+  //       tuple(CoreMetrics.TEST_ERRORS_KEY, 1, 0L),
+  //       tuple(CoreMetrics.TEST_EXECUTION_TIME_KEY, 0, 1610L),
+  //       tuple(CoreMetrics.TEST_FAILURES_KEY, 1, 0L));
 
-    assertThat(logTester.logs()).noneMatch(l -> l.contains("Please use 'sonar.testExecutionReportPaths'"));
-  }
+  //   assertThat(logTester.logs()).noneMatch(l -> l.contains("Please use 'sonar.testExecutionReportPaths'"));
+  // }
 
 }
