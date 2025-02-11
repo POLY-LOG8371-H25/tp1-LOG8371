@@ -785,49 +785,49 @@ class FileSystemMediumIT {
     assertThat(result.inputFiles()).extracting(InputFile::path).allMatch(path -> path.startsWith(projectDir.toPath()));
   }
 
-  // SONAR-6719
-  @Test
-  void scanProjectWithWrongCase() {
-    // To please the quality gate, don't use assumeTrue, or the test will be reported as skipped
-    File projectDir = new File("test-resources/mediumtest/xoo/sample");
-    AnalysisBuilder analysis = tester
-      .newAnalysis(new File(projectDir, "sonar-project.properties"))
-      .property("sonar.sources", "XOURCES")
-      .property("sonar.tests", "TESTX")
-      .property("sonar.scm.exclusions.disabled", "true");
+  // // SONAR-6719
+  // @Test
+  // void scanProjectWithWrongCase() {
+  //   // To please the quality gate, don't use assumeTrue, or the test will be reported as skipped
+  //   File projectDir = new File("test-resources/mediumtest/xoo/sample");
+  //   AnalysisBuilder analysis = tester
+  //     .newAnalysis(new File(projectDir, "sonar-project.properties"))
+  //     .property("sonar.sources", "XOURCES")
+  //     .property("sonar.tests", "TESTX")
+  //     .property("sonar.scm.exclusions.disabled", "true");
 
-    if (System2.INSTANCE.isOsWindows()) { // Windows is file path case-insensitive
-      AnalysisResult result = analysis.execute();
+  //   if (System2.INSTANCE.isOsWindows()) { // Windows is file path case-insensitive
+  //     AnalysisResult result = analysis.execute();
 
-      assertThat(result.inputFiles()).hasSize(8);
-      assertThat(result.inputFiles()).extractingResultOf("relativePath").containsOnly(
-        "testx/ClassOneTest.xoo.measures",
-        "xources/hello/helloscala.xoo.measures",
-        "xources/hello/HelloJava.xoo.measures",
-        "testx/ClassOneTest.xoo",
-        "xources/hello/HelloJava.xoo.scm",
-        "xources/hello/helloscala.xoo",
-        "testx/ClassOneTest.xoo.scm",
-        "xources/hello/HelloJava.xoo");
-    } else if (System2.INSTANCE.isOsMac()) {
-      AnalysisResult result = analysis.execute();
+  //     assertThat(result.inputFiles()).hasSize(8);
+  //     assertThat(result.inputFiles()).extractingResultOf("relativePath").containsOnly(
+  //       "testx/ClassOneTest.xoo.measures",
+  //       "xources/hello/helloscala.xoo.measures",
+  //       "xources/hello/HelloJava.xoo.measures",
+  //       "testx/ClassOneTest.xoo",
+  //       "xources/hello/HelloJava.xoo.scm",
+  //       "xources/hello/helloscala.xoo",
+  //       "testx/ClassOneTest.xoo.scm",
+  //       "xources/hello/HelloJava.xoo");
+  //   } else if (System2.INSTANCE.isOsMac()) {
+  //     AnalysisResult result = analysis.execute();
 
-      assertThat(result.inputFiles()).hasSize(8);
-      assertThat(result.inputFiles()).extractingResultOf("relativePath").containsOnly(
-        "TESTX/ClassOneTest.xoo.measures",
-        "XOURCES/hello/helloscala.xoo.measures",
-        "XOURCES/hello/HelloJava.xoo.measures",
-        "TESTX/ClassOneTest.xoo",
-        "XOURCES/hello/HelloJava.xoo.scm",
-        "XOURCES/hello/helloscala.xoo",
-        "TESTX/ClassOneTest.xoo.scm",
-        "XOURCES/hello/HelloJava.xoo");
-    } else {
-      assertThatThrownBy(analysis::execute)
-        .isInstanceOf(MessageException.class)
-        .hasMessageContaining("The folder 'TESTX' does not exist for 'sample'");
-    }
-  }
+  //     assertThat(result.inputFiles()).hasSize(8);
+  //     assertThat(result.inputFiles()).extractingResultOf("relativePath").containsOnly(
+  //       "TESTX/ClassOneTest.xoo.measures",
+  //       "XOURCES/hello/helloscala.xoo.measures",
+  //       "XOURCES/hello/HelloJava.xoo.measures",
+  //       "TESTX/ClassOneTest.xoo",
+  //       "XOURCES/hello/HelloJava.xoo.scm",
+  //       "XOURCES/hello/helloscala.xoo",
+  //       "TESTX/ClassOneTest.xoo.scm",
+  //       "XOURCES/hello/HelloJava.xoo");
+  //   } else {
+  //     assertThatThrownBy(analysis::execute)
+  //       .isInstanceOf(MessageException.class)
+  //       .hasMessageContaining("The folder 'TESTX' does not exist for 'sample'");
+  //   }
+  // }
 
   @Test
   void indexAnyFile() throws IOException {

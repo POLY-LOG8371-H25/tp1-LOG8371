@@ -12,19 +12,32 @@ jobs:
     name: Build and analyze
     runs-on: ubuntu-latest
     steps:
-      # Étape 1 : Checkout du code source
+      # Checkout du code source
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0  
+          fetch-depth: 0 
 
-      # Étape 2 : Configuration de l'environnement JDK
+      # Configuration de l'environnement JDK
       - name: Set up JDK 17
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v2
         with:
           java-version: 17
-          distribution: 'zulu' # Autres distributions disponibles
+          distribution: 'zulu' 
 
-      # Étape 3 : Mise en cache des paquets SonarQube
+      # Install dependencies 
+   
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y git unzip
+
+      # Clean cache
+      - name: Clean caches 
+        run: |
+          rm -rf ~/.gradle/caches
+          rm -rf ~/.sonar/cache
+
+      # Mise en cache des paquets SonarQube
       - name: Cache SonarQube packages
         uses: actions/cache@v4
         with:
@@ -32,7 +45,7 @@ jobs:
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
 
-      # Étape 4 : Mise en cache des paquets Gradle
+      # Mise en cache des paquets Gradle
       - name: Cache Gradle packages
         uses: actions/cache@v4
         with:
@@ -40,12 +53,29 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
           restore-keys: ${{ runner.os }}-gradle
 
-      # Étape 5 : Donner les permissions d'exécution à gradlew
+
+      # permissions d'exécution à gradlew
       - name: Grant execute permissions for Gradle wrapper
         run: chmod +x ./gradlew
-
-      # Étape 6 : Compilation et analyse avec SonarQube
-      - name: Build, unit tests and analyze
+        
+      - name: Use Gradle Wrapper
+        run: ./gradlew wrapper 
+            
+      
+      # Compilation et analyse avec SonarQube
+      - name: Build, test and analyze
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ./gradlew build -x test sonarqube --info --debug
+        run: ./gradlew build -x test  sonarqube --info --stacktrace
+          
+      # Compression du log de build for debug 
+      - name: Compress Build Log
+        run: gzip -9 build.log || echo "No build.log found"
+
+      # Upload du build log en tant qu'artifact
+      - name: Upload Build Log Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-log
+          path: build.log.gz
+          retention-days: 7
