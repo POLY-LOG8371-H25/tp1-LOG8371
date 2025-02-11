@@ -27,13 +27,13 @@ jobs:
           ./gradlew build -Dsonar.log.level=INFO --warning-mode=all | tee build.log
 
       - name: Compress Build Log
-        run: gzip -9 sonarqube-master/build.log
+        run: gzip -9 ./build.log
       
       - name: Upload Build Log Artifact
         uses: actions/upload-artifact@v4
         with:
           name: build-log
-          path: sonarqube-master/build.log.gz  # Ensure this file exists
+          path: ./build.log.gz  # Ensure this file exists
           retention-days: 7
 
       - name: Unzip app and Launch
